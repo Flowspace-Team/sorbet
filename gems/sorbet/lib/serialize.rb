@@ -337,6 +337,14 @@ class Sorbet::Private::Serialize
           uniq += 1
         end
       end
+
+      # Sanitize parameter names that are not valid
+      name = name.to_s.gsub(/[^a-zA-Z0-9_]/) do
+        result = '_' + (uniq == 0 ? '' : uniq.to_s)
+        uniq += 1
+        result
+      end
+
       [kind, name]
     end
   end
